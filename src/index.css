@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+	@font-face {
+		font-family: 'BlueOcean';
+		font-style: normal;
+		font-display: swap;
+		src: url(/webfonts/BlueOceanRegular.ttf) format('truetype');
+	}
+
+	@font-face {
+		font-family: 'GeHili';
+		font-style: normal;
+		font-display: swap;
+		src: url(/webfonts/GEHili.ttf) format('truetype');
+	}
+
+	body {
+		font-family: 'BlueOcean', sans-serif;
+	}
+
+}
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+
+html,
+body {
+	background-color: theme('colors.white');
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden;
+}
+
+
+html {
+	scroll-snap-type: y mandatory;
+	scroll-behavior: smooth;
+	overflow-x: hidden;
+}
+
+
+body::-webkit-scrollbar,
+.mainbg::-webkit-scrollbar {
+	background-color: theme('colors.secondary-color');
+	width: 10px;
+}
+
+body::-webkit-scrollbar-thumb,
+.mainbg::-webkit-scrollbar-thumb {
+	background-color: theme('colors.primary-color');
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+ul li {
+	list-style-type: none;
+}
+
+a {
+	text-decoration: none !important;
+}
+
+.english-numerals {
+	font-family: Arial, Helvetica, sans-serif;
+}
