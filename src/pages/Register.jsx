@@ -28,7 +28,7 @@ const Register = () => {
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const isLoading = useSelector((state) => state.auth.isLoading);
-  const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state) => state.auth.accessToken);
 
   console.log("isAuthenticated", isAuthenticated);
   console.log("token", token);

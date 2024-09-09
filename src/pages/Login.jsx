@@ -1,12 +1,19 @@
 import logo from "/images/logoIcon.svg";
 import doctor from "/images/doctor2.png";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "@store/authSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  });
 
   const [formData, setFormData] = useState({
     email: "",
@@ -14,8 +21,9 @@ const Login = () => {
   });
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   const isLoading = useSelector((state) => state.auth.isLoading);
-  const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state) => state.auth.accessToken);
 
   console.log("isAuthenticated", isAuthenticated);
   console.log("token", token);

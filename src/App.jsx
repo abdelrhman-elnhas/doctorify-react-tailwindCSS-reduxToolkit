@@ -58,15 +58,9 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/book" element={<BookAppointment />} />
             <Route path="/payment" element={<Payment />} />
-            <Route path="/profile/:profileId" element={<Profile />}>
-              <Route
-                path="/profile/:profileId/payments"
-                element={<Payments />}
-              />
-              <Route
-                path="/profile/:profileId/appointments"
-                element={<Appointments />}
-              />
+            <Route path="/profile" element={<Profile />}>
+              <Route path="/profile/payments" element={<Payments />} />
+              <Route path="/profile/appointments" element={<Appointments />} />
             </Route>
           </Route>
         </Routes>

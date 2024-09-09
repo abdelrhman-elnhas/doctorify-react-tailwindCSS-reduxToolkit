@@ -1,17 +1,45 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "/images/logoFull.svg";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaTimes } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@store/authSlice";
+import { FaUser } from "react-icons/fa";
+import { TbLogout } from "react-icons/tb";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const dropdownRef = useRef(null);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  const [drop, setDrop] = useState(false);
+  const handleDropdown = () => {
+    setDrop(!drop);
+  };
+
   const [nav, setNav] = useState(false);
   const handleClick = () => setNav(!nav);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate("/login");
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDrop(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header>
@@ -47,24 +75,55 @@ const Navbar = () => {
               </li>
             </Link>
           </ul>
-          {isAuthenticated ? (
-            <div className="relative inline-block">
-              <img
-                src="https://readymadeui.com/team-6.webp"
-                className="w-10 h-10 border rounded-full border-primary-color"
-              />
-              {/* <span className="absolute right-0 block w-3 h-3 bg-green-500 border border-white rounded-full bottom-1"></span> */}
-            </div>
-          ) : (
-            <button
-              className="px-4 text-[1rem] xl:text-lg py-[6px] text-white rounded-sm bg-primary-color transition-default duration-default hover:bg-secondary-color"
-              onClick={() => navigate("/login")}
-            >
-              تسجيل الدخول
-            </button>
-          )}
+          <div className="relative">
+            {isAuthenticated ? (
+              <>
+                <button
+                  className="relative inline-block"
+                  onClick={handleDropdown}
+                >
+                  <img
+                    src="https://readymadeui.com/team-6.webp"
+                    className="w-10 h-10 border rounded-full hover:border-2 border-primary-color"
+                  />
+                  {/* <span className="absolute right-0 block w-3 h-3 bg-green-500 border border-white rounded-full bottom-1"></span> */}
+                </button>
+                {drop && (
+                  <ul
+                    ref={dropdownRef}
+                    className="absolute block shadow-lg left-3 bg-slate-50 py-2 z-[1000] min-w-[200px] w-max rounded max-h-96 overflow-auto"
+                  >
+                    <Link
+                      to="/profile"
+                      onClick={() => {
+                        navigate("/profile");
+                      }}
+                    >
+                      <li className="flex items-center px-6 py-3 text-sm cursor-pointer text-primary-color hover:bg-primary-color-25">
+                        <FaUser className="inline mx-2" />
+                        الحساب الشخصي
+                      </li>
+                    </Link>
+                    <Link to="/logout" onClick={handleLogout}>
+                      <li className="flex items-center px-6 py-3 text-sm cursor-pointer text-primary-color hover:bg-primary-color-25">
+                        <TbLogout className="inline mx-2" />
+                        تسجيل الخروج
+                      </li>
+                    </Link>
+                  </ul>
+                )}
+              </>
+            ) : (
+              <button
+                className="px-4 text-[1rem] xl:text-lg py-[6px] text-white rounded-sm bg-primary-color transition-default duration-default hover:bg-secondary-color"
+                onClick={() => navigate("/login")}
+              >
+                تسجيل الدخول
+              </button>
+            )}
+          </div>
         </div>
-        <div className="z-10 md:hidden" onClick={handleClick}>
+        <div className="z-50 md:hidden" onClick={handleClick}>
           {nav ? (
             <FaTimes size={25} color="#eee" />
           ) : (
@@ -75,7 +134,7 @@ const Navbar = () => {
         <ul
           className={`${
             nav
-              ? "text-white opacity-100 transform translate-x-0"
+              ? "text-white opacity-100 transform translate-x-0 z-40"
               : "opacity-0 transform -translate-y-full"
           } transition-default gap-4 text-white duration-default absolute top-0 left-0 w-full h-screen bg-primary-color bg-opacity-90 flex flex-col justify-center items-center text-2xl`}
           onClick={() => setNav(false)}
@@ -105,12 +164,31 @@ const Navbar = () => {
               تواصل معنا
             </li>
           </Link>
-          <button
-            className="px-4 text-[1rem] xl:text-lg py-[6px] text-white rounded-sm bg-secondary-color transition-default duration-default hover:bg-white hover:text-primary-color"
-            onClick={() => navigate("/login")}
-          >
-            تسجيل الدخول
-          </button>
+          {isAuthenticated ? (
+            <>
+              <button
+                className="px-4 text-[1rem] xl:text-lg py-[6px] text-black rounded-sm bg-slate-300 transition-default duration-default hover:bg-white hover:text-primary-color"
+                onClick={() => {
+                  navigate("/profile");
+                }}
+              >
+                الحساب الشخصي
+              </button>
+              <button
+                className="px-6 text-[1rem] xl:text-lg py-[6px] text-white rounded-sm bg-red-500 transition-default duration-default hover:bg-white hover:text-primary-color"
+                onClick={handleLogout}
+              >
+                تسجيل خروج
+              </button>
+            </>
+          ) : (
+            <button
+              className="px-4 text-[1rem] xl:text-lg py-[6px] text-black rounded-sm bg-slate-300 transition-default duration-default hover:bg-secondary-color"
+              onClick={() => navigate("/login")}
+            >
+              تسجيل الدخول
+            </button>
+          )}
         </ul>
       </nav>
     </header>

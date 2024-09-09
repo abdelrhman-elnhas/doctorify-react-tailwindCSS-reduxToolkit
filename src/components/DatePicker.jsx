@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { DayPicker, getDefaultClassNames } from "react-day-picker";
 import "react-day-picker/style.css";
 import { arSA } from "date-fns/locale";
@@ -10,6 +10,8 @@ const DatePicker = ({ onDateSelect }) => {
 
   const inputId = useId();
 
+  const calenderRef = useRef();
+
   // Hold the month in state to control the calendar when the input changes
   const [month, setMonth] = useState(new Date());
 
@@ -17,6 +19,19 @@ const DatePicker = ({ onDateSelect }) => {
   const [inputValue, setInputValue] = useState("");
 
   const [openCalender, setOpenCalender] = useState(false);
+
+  const handleClickOutside = (event) => {
+    if (calenderRef.current && !calenderRef.current.contains(event.target)) {
+      setOpenCalender(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleOpenCalender = () => {
     setOpenCalender((prev) => {
@@ -88,7 +103,10 @@ const DatePicker = ({ onDateSelect }) => {
       />
 
       {openCalender && (
-        <div className="absolute top-0 p-1 bg-gray-200 rounded-sm shadow-lg english-numerals ">
+        <div
+          className="absolute top-0 p-1 bg-gray-200 rounded-sm shadow-lg english-numerals "
+          ref={calenderRef}
+        >
           <DayPicker
             month={month}
             onMonthChange={setMonth}

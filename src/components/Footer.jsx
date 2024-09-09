@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import logo from "/images/logoFull.svg";
 import { IoLocationOutline } from "react-icons/io5";
+import { FaFacebook, FaWhatsapp } from "react-icons/fa";
+import { CiMail } from "react-icons/ci";
 
 const Footer = () => {
   return (
@@ -166,6 +168,15 @@ const Footer = () => {
 
               <li>
                 <NavLink
+                  to="/blogs"
+                  className="text-gray-700 transition hover:opacity-75"
+                >
+                  المقالات
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
                   to="/book"
                   className="text-gray-700 transition hover:opacity-75"
                 >
@@ -188,36 +199,43 @@ const Footer = () => {
             <p className="text-lg font-bold text-primary-color font-gehili">
               تواصل معنا
             </p>
-            <ul className="mt-6 space-y-4 text-sm">
-              <li>
-                <NavLink
-                  to=""
-                  className="text-gray-700 transition hover:opacity-75"
-                >
-                  <IoLocationOutline className="me-2" />
+            <ul className="flex flex-col items-start justify-center gap-3 mt-4 text-base">
+              <NavLink
+                to="wa.me/+201127698622"
+                className="text-gray-700 transition hover:opacity-90"
+              >
+                <li>
+                  <IoLocationOutline className="inline me-2" />
                   القاهرة ، مدينة نصر
-                </NavLink>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
-                  {" "}
-                  Meet the Team{" "}
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-700 transition hover:opacity-75"
-                >
-                  {" "}
-                  Accounts Review{" "}
-                </a>
-              </li>
+                </li>
+              </NavLink>
+              <NavLink
+                to="wa.me/+201127698622"
+                className="text-gray-700 transition hover:opacity-90 english-numerals "
+              >
+                <li>
+                  <FaWhatsapp className="inline me-2" />
+                  01127698622
+                </li>
+              </NavLink>
+              <NavLink
+                to="mailto:info@drahmed.com"
+                className="text-gray-700 transition hover:opacity-90"
+              >
+                <li>
+                  <CiMail className="inline me-2" />
+                  info@drahmed.com
+                </li>
+              </NavLink>
+              <NavLink
+                to="www.facebook.com/materc0de"
+                className="text-gray-700 transition hover:opacity-90"
+              >
+                <li>
+                  <FaFacebook className="inline me-2" />
+                  Dr Ahmed Mohamed
+                </li>
+              </NavLink>
             </ul>
           </div>
 
