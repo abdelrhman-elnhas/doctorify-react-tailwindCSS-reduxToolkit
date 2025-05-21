@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "@store/authSlice";
 import { FaUser } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
+import { logout } from "@store/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -21,11 +21,12 @@ const Navbar = () => {
   };
 
   const [nav, setNav] = useState(false);
-  const handleClick = () => setNav(!nav);
+  const handleClick = () => setNav((prev) => !prev);
 
-  const handleLogout = async () => {
-    await dispatch(logout());
-    navigate("/login");
+  const handleLogout = () => {
+    console.log("logout");
+    dispatch(logout());
+    setDrop(false);
   };
 
   const handleClickOutside = (event) => {
@@ -96,6 +97,7 @@ const Navbar = () => {
                     <Link
                       to="/profile"
                       onClick={() => {
+                        setDrop(false);
                         navigate("/profile");
                       }}
                     >
@@ -104,12 +106,12 @@ const Navbar = () => {
                         الحساب الشخصي
                       </li>
                     </Link>
-                    <Link to="/logout" onClick={handleLogout}>
+                    <button onClick={handleLogout} className="w-full">
                       <li className="flex items-center px-6 py-3 text-sm cursor-pointer text-primary-color hover:bg-primary-color-25">
                         <TbLogout className="inline mx-2" />
                         تسجيل الخروج
                       </li>
-                    </Link>
+                    </button>
                   </ul>
                 )}
               </>
