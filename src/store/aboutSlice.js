@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { apiRequest } from "@utils/apiRequest";
 
 const initialState = {
   cases: null,
@@ -10,26 +9,28 @@ const initialState = {
 
 export const getCases = createAsyncThunk(
   "cases/best-cases",
-  async (_, { dispatch, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await apiRequest(
-        "https://darkgray-crow-946145.hostingersite.com/api/",
+      const response = await fetch(
+        "https://darkgray-crow-946145.hostingersite.com/api/blogs",
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
-        },
-        dispatch,
-        getState
+        }
       );
       if (!response.ok) {
-        const err = response.json();
+        const err = await response.json();
         throw new Error(err.message || "Failed to Fetch Best Cases");
       }
-      return response.json();
+      const data = await response.json();
+
+      console.log("data", data.data);
+      return data;
     } catch (err) {
-      throw new Error(err.message);
+      console.log("rejectWithValue");
+      return rejectWithValue(err.message);
     }
   }
 );
@@ -47,7 +48,8 @@ const aboutSlice = createSlice({
       })
       .addCase(getCases.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.cases = action.payload.cases;
+        state.cases = action.payload.data;
+        console.log("payload", state.cases);
         state.error = null;
         state.success = true;
       })
